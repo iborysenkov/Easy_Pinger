@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Management;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace My_NET_app
 {
     public partial class Form1 : Form
@@ -19,6 +21,107 @@ namespace My_NET_app
         public Form1()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Finds the MAC address of the first operation NIC found.
+        /// </summary>
+        /// <returns>The MAC address.</returns>
+        private string GetMyMacAddress()
+        {
+            string My_macAddresses = String.Empty;
+
+            foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
+            {
+              My_macAddresses += nic.GetPhysicalAddress().ToString() + System.Environment.NewLine;
+                    
+            }
+
+            return My_macAddresses;
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public void ShowNetworkInterfaces()
+        {
+            textBox4.Text = String.Empty;
+            IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
+            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
+            textBox4.Text += "Interface information for     " +   computerProperties.HostName.ToString() + computerProperties.DomainName.ToString() + System.Environment.NewLine;
+            if (nics == null || nics.Length < 1)
+            {
+                textBox4.Text += "  No network interfaces found.";
+                return;
+            }
+
+            textBox4.Text += "  Number of interfaces .................... : "+ nics.Length.ToString()+ System.Environment.NewLine;
+            foreach (NetworkInterface adapter in nics)
+            {
+                IPInterfaceProperties properties = adapter.GetIPProperties();
+                //Console.WriteLine();
+                textBox4.Text += adapter.Description.ToString()+System.Environment.NewLine;
+                textBox4.Text += String.Empty.PadLeft(adapter.Description.Length, '=').ToString() + System.Environment.NewLine;
+                //textBox4.Text += "  Interface type .......................... : " + adapter.NetworkInterfaceType.ToString() + System.Environment.NewLine;
+                textBox4.Text += "  Physical Address ........................ : " +
+                           adapter.GetPhysicalAddress().ToString() + System.Environment.NewLine;
+                textBox4.Text += "  Operational status ...................... : " +
+                    adapter.OperationalStatus.ToString() + System.Environment.NewLine;
+                string versions = "";
+                foreach (IPAddressInformation unicast in properties.UnicastAddresses)
+                {
+                    textBox4.Text += "  IP address ...................... : " + unicast.Address + System.Environment.NewLine;
+                }
+                // Create a display string for the supported IP versions.
+                if (adapter.Supports(NetworkInterfaceComponent.IPv4))
+                {
+                    versions = "IPv4";
+                }
+                if (adapter.Supports(NetworkInterfaceComponent.IPv6))
+                {
+                    if (versions.Length > 0)
+                    {
+                        versions += " ";
+                    }
+                    versions += "IPv6";
+                }
+                //textBox4.Text += "  IP version .............................. : "+ versions + System.Environment.NewLine;
+                //ShowIPAddresses(properties);
+
+                // The following information is not useful for loopback adapters.
+                if (adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback)
+                {
+                    continue;
+                }
+                //textBox4.Text += ("  DNS suffix .............................. : {0}",                properties.DnsSuffix);
+
+                string label;
+                if (adapter.Supports(NetworkInterfaceComponent.IPv4))
+                {
+                    IPv4InterfaceProperties ipv4 = properties.GetIPv4Properties();
+                    //textBox4.Text += ("  MTU...................................... : {0}", ipv4.Mtu);
+                    if (ipv4.UsesWins)
+                    {
+
+                        IPAddressCollection winsServers = properties.WinsServersAddresses;
+                        if (winsServers.Count > 0)
+                        {
+                            label = "  WINS Servers ............................ :";
+                            //ShowIPAddresses(label, winsServers);
+                        }
+                    }
+                }
+
+                //textBox4.Text += ("  DNS enabled ............................. : {0}",                    properties.IsDnsEnabled);
+                //textBox4.Text += ("  Dynamically configured DNS .............. : {0}",                    properties.IsDynamicDnsEnabled);
+                //textBox4.Text += ("  Receive Only ............................ : {0}",                    adapter.IsReceiveOnly);
+                //textBox4.Text += ("  Multicast ............................... : {0}",                    adapter.SupportsMulticast);
+                //ShowInterfaceStatistics(adapter);
+
+                Console.WriteLine();
+            }
         }
 
         public string GetMacAddress(string ipAddress)
@@ -47,6 +150,7 @@ namespace My_NET_app
                 return "not found";
             }
         }
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -59,7 +163,6 @@ namespace My_NET_app
         {
             
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             IPAddress ip_Checked;
@@ -130,8 +233,9 @@ namespace My_NET_app
                         textBox3.Text += $"    {address}" + System.Environment.NewLine;
                     }
 
+                    //textBox3.Text += GetMyMacAddress();
 
-
+                    ShowNetworkInterfaces();
 
                 }
                 catch
@@ -165,10 +269,7 @@ namespace My_NET_app
 
         }
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
 
-        }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -178,6 +279,11 @@ namespace My_NET_app
         private void label2_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/icoldiron/Easy_Pinger");
         }
     }
 }
