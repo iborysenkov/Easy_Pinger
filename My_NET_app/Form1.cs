@@ -47,6 +47,7 @@ namespace My_NET_app
 
         public void ShowNetworkInterfaces()
         {
+
             textBox4.Text = String.Empty;
             IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
             NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
