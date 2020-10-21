@@ -110,7 +110,7 @@ namespace My_NET_app
                         if (winsServers.Count > 0)
                         {
                             label = "  WINS Servers ............................ :";
-                            //ShowIPAddresses(label, winsServers);
+                            //ShowIPAddresses(label, winsServers); 
                         }
                     }
                 }
