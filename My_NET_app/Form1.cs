@@ -58,13 +58,14 @@ namespace My_NET_app
                 return;
             }
 
-            textBox4.Text += "  Number of interfaces .................... : "+ nics.Length.ToString()+ System.Environment.NewLine;
+            textBox4.Text += "  Number of interfaces .................... : "+ nics.Length.ToString()+ System.Environment.NewLine + System.Environment.NewLine; ;
             foreach (NetworkInterface adapter in nics)
             {
                 IPInterfaceProperties properties = adapter.GetIPProperties();
                 //Console.WriteLine();
                 textBox4.Text += adapter.Description.ToString()+System.Environment.NewLine;
-                textBox4.Text += String.Empty.PadLeft(adapter.Description.Length, '=').ToString() + System.Environment.NewLine;
+                textBox4.Text += "=================================================" + System.Environment.NewLine;
+                //textBox4.Text += String.Empty.PadLeft(adapter.Description.Length, '=').ToString() + System.Environment.NewLine;
                 //textBox4.Text += "  Interface type .......................... : " + adapter.NetworkInterfaceType.ToString() + System.Environment.NewLine;
                 textBox4.Text += "  Physical Address ........................ : " +
                            adapter.GetPhysicalAddress().ToString() + System.Environment.NewLine;
@@ -96,9 +97,19 @@ namespace My_NET_app
                 {
                     continue;
                 }
-                //textBox4.Text += ("  DNS suffix .............................. : {0}",                properties.DnsSuffix);
+                //textBox4.Text += "  DNS suffix .............................. : "+ properties.DnsSuffix.ToString() + System.Environment.NewLine + System.Environment.NewLine;
 
-                string label;
+                    IPAddressCollection dnsAddresses = properties.DnsAddresses;
+
+                    foreach (IPAddress dnsAdress in dnsAddresses)
+                    {
+                        
+                        textBox4.Text += "  DNS address .............................. : " + dnsAdress + System.Environment.NewLine;
+                    }
+               
+
+
+                    string label;
                 if (adapter.Supports(NetworkInterfaceComponent.IPv4))
                 {
                     IPv4InterfaceProperties ipv4 = properties.GetIPv4Properties();

@@ -43,21 +43,23 @@
             // textBox1
             // 
             this.textBox1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBox1.Location = new System.Drawing.Point(29, 266);
+            this.textBox1.Location = new System.Drawing.Point(22, 216);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(599, 329);
+            this.textBox1.Size = new System.Drawing.Size(450, 268);
             this.textBox1.TabIndex = 1;
             this.textBox1.WordWrap = false;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(505, 605);
+            this.button1.Location = new System.Drawing.Point(379, 492);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(123, 37);
+            this.button1.Size = new System.Drawing.Size(92, 30);
             this.button1.TabIndex = 2;
             this.button1.Text = "Ping";
             this.button1.UseVisualStyleBackColor = true;
@@ -65,31 +67,34 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(39, 41);
+            this.textBox2.Location = new System.Drawing.Point(29, 33);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(136, 22);
+            this.textBox2.Size = new System.Drawing.Size(103, 20);
             this.textBox2.TabIndex = 3;
             this.textBox2.Text = "192.168.0.240";
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(292, 41);
+            this.textBox3.Location = new System.Drawing.Point(219, 33);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
             this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox3.ShortcutsEnabled = false;
-            this.textBox3.Size = new System.Drawing.Size(336, 222);
+            this.textBox3.Size = new System.Drawing.Size(253, 181);
             this.textBox3.TabIndex = 4;
             this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(289, 9);
+            this.label1.Location = new System.Drawing.Point(217, 7);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 17);
+            this.label1.Size = new System.Drawing.Size(54, 15);
             this.label1.TabIndex = 6;
             this.label1.Text = "IP config";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -97,17 +102,19 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(36, 9);
+            this.label3.Location = new System.Drawing.Point(27, 7);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(120, 17);
+            this.label3.Size = new System.Drawing.Size(103, 15);
             this.label3.TabIndex = 8;
             this.label3.Text = "IP adress for Ping";
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1109, 605);
+            this.button2.Location = new System.Drawing.Point(832, 492);
+            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(123, 37);
+            this.button2.Size = new System.Drawing.Size(92, 30);
             this.button2.TabIndex = 9;
             this.button2.Text = "Clear";
             this.button2.UseVisualStyleBackColor = true;
@@ -115,29 +122,32 @@
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(638, 41);
+            this.textBox4.Location = new System.Drawing.Point(478, 33);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
             this.textBox4.ReadOnly = true;
             this.textBox4.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox4.Size = new System.Drawing.Size(594, 554);
+            this.textBox4.Size = new System.Drawing.Size(446, 451);
             this.textBox4.TabIndex = 10;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(635, 9);
+            this.label2.Location = new System.Drawing.Point(476, 7);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(131, 17);
+            this.label2.Size = new System.Drawing.Size(113, 15);
             this.label2.TabIndex = 11;
             this.label2.Text = "Interface config Full";
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(26, 246);
+            this.linkLabel1.Location = new System.Drawing.Point(20, 200);
+            this.linkLabel1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(172, 17);
+            this.linkLabel1.Size = new System.Drawing.Size(148, 15);
             this.linkLabel1.TabIndex = 12;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Click for help and updates";
@@ -145,10 +155,10 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1244, 654);
+            this.ClientSize = new System.Drawing.Size(933, 531);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox4);
@@ -159,8 +169,9 @@
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
-            this.Text = "NetChecker V.2";
+            this.Text = "NetChecker V.2.1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
