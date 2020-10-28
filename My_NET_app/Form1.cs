@@ -155,6 +155,7 @@ namespace My_NET_app
                         {
                             textBox4.Text += "  IP address ...................... : " + unicast.Address + System.Environment.NewLine;
                         }
+
                         if (adapter.Supports(NetworkInterfaceComponent.IPv4))
                         {
                             versions = "IPv4";
@@ -166,13 +167,16 @@ namespace My_NET_app
                                 versions += " ";
                             }
                             versions += "IPv6";
-                            if (adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback)
-                            {
-                                continue;
-                            }
-                            //textBox4.Text += "  DNS suffix .............................. : "+ properties.DnsSuffix.ToString() + System.Environment.NewLine + System.Environment.NewLine;
+                        }
 
-                            IPAddressCollection dnsAddresses = properties.DnsAddresses;
+                        if (adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback)
+                        {
+                            continue;
+                        }
+
+                        //textBox4.Text += "  DNS suffix .............................. : "+ properties.DnsSuffix.ToString() + System.Environment.NewLine + System.Environment.NewLine;
+
+                        IPAddressCollection dnsAddresses = properties.DnsAddresses;
 
                             foreach (IPAddress dnsAdress in dnsAddresses)
                             {
@@ -198,7 +202,7 @@ namespace My_NET_app
                                     }
                                 }
                             }
-                        }
+                        
                     }
 
                 }
