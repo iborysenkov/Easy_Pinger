@@ -12,12 +12,9 @@ namespace My_NET_app
         public Form1()
         {
             InitializeComponent();
-            
-
         }
 
         #region Full net interface ShowNetworkInterfaces()
-
 
         public void ShowNetworkInterfaces()
         {
@@ -204,7 +201,7 @@ namespace My_NET_app
             if (reply != null)
             {
                 textBox1.Text += "Ping " + Ip_For_Check.ToString() + System.Environment.NewLine;
-                textBox1.Text += DateTime.Now.ToString() + " " + reply.Status + " Time : " + reply.RoundtripTime.ToString() + " Address : " + reply.Address + Environment.NewLine;
+                textBox1.Text += DateTime.Now.ToString() + "  //  Ping " + reply.Status + "  // Time : " + reply.RoundtripTime.ToString()+" //" + " Address : " + reply.Address + Environment.NewLine;
                 //Console.WriteLine(reply.ToString());
                 
                 string Test_on_Success = reply.Status.ToString();
@@ -254,7 +251,7 @@ namespace My_NET_app
 
             foreach (IPAddress address in host.AddressList)
             {
-                textBox3.Text += "#"+$"    {address}"+"#" + "  ";
+                textBox3.Text += " #"+$"{address}"+"#" + "  ";
             }
         }
 
@@ -289,6 +286,7 @@ namespace My_NET_app
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
             string HostName = Dns.GetHostName();
             Get_Host_IP_Address(HostName);
             ShowNetworkInterfaces();
@@ -339,7 +337,7 @@ namespace My_NET_app
                 }
                 catch
                 {
-                    Console.WriteLine("ERROR: You have Some TIMEOUT issue");
+                    //Console.WriteLine("ERROR: You have Some TIMEOUT issue");
                 }
 
             } //check IP correct entry and run Ping test
@@ -383,5 +381,18 @@ namespace My_NET_app
 
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            this.Hide();
+            Form2 f2 = new Form2();
+            f2.ShowDialog();
+            this.Close();
+
+            //this.Hide();
+            //var form2 = new Form2();
+            //form2.Closed += (s, args) => this.Close();
+            //form2.Show();
+        }
     }
 }

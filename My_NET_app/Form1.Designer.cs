@@ -41,6 +41,7 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -187,12 +188,24 @@
             this.label4.Text = "UserNames";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(968, 606);
+            this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(123, 37);
+            this.button3.TabIndex = 16;
+            this.button3.Text = "Modbus";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1244, 654);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.checkBox1);
@@ -230,6 +243,7 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button3;
     }
 }
 
