@@ -61,7 +61,7 @@ namespace My_NET_app
             this.textBox2.Location = new System.Drawing.Point(12, 111);
             this.textBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(136, 20);
+            this.textBox2.Size = new System.Drawing.Size(136, 22);
             this.textBox2.TabIndex = 4;
             this.textBox2.Text = "192.168.0.240";
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
@@ -71,7 +71,7 @@ namespace My_NET_app
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 34);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 15);
+            this.label1.Size = new System.Drawing.Size(106, 17);
             this.label1.TabIndex = 5;
             this.label1.Text = "Select interface";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -81,7 +81,7 @@ namespace My_NET_app
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 92);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 15);
+            this.label2.Size = new System.Drawing.Size(75, 17);
             this.label2.TabIndex = 6;
             this.label2.Text = "IP address";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -93,7 +93,7 @@ namespace My_NET_app
             this.textBox1.Location = new System.Drawing.Point(12, 167);
             this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(69, 20);
+            this.textBox1.Size = new System.Drawing.Size(69, 22);
             this.textBox1.TabIndex = 7;
             this.textBox1.Text = "502";
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
@@ -103,12 +103,15 @@ namespace My_NET_app
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 148);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 15);
+            this.label3.Size = new System.Drawing.Size(34, 17);
             this.label3.TabIndex = 8;
             this.label3.Text = "Port";
             // 
             // textBox3
             // 
+            this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox3.Location = new System.Drawing.Point(351, 54);
             this.textBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox3.Multiline = true;
@@ -125,12 +128,13 @@ namespace My_NET_app
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(348, 34);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 15);
+            this.label4.Size = new System.Drawing.Size(70, 17);
             this.label4.TabIndex = 10;
             this.label4.Text = "Poll result";
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button1.Location = new System.Drawing.Point(179, 402);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
@@ -142,6 +146,7 @@ namespace My_NET_app
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(653, 402);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
@@ -153,6 +158,7 @@ namespace My_NET_app
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Location = new System.Drawing.Point(524, 402);
             this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button3.Name = "button3";
@@ -168,7 +174,7 @@ namespace My_NET_app
             this.textBox4.Location = new System.Drawing.Point(12, 219);
             this.textBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(69, 20);
+            this.textBox4.Size = new System.Drawing.Size(69, 22);
             this.textBox4.TabIndex = 14;
             this.textBox4.Text = "1";
             this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
@@ -178,7 +184,7 @@ namespace My_NET_app
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(12, 200);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(99, 15);
+            this.label5.Size = new System.Drawing.Size(116, 17);
             this.label5.TabIndex = 15;
             this.label5.Text = "Unit ID (Address)";
             // 
@@ -200,6 +206,7 @@ namespace My_NET_app
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.comboBox1);
+            this.MinimumSize = new System.Drawing.Size(818, 497);
             this.Name = "Form2";
             this.Text = "Modbus";
             this.Load += new System.EventHandler(this.Form2_Load);

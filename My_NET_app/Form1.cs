@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Windows.Forms;
 using System.DirectoryServices;
+using System.Threading.Tasks;
 
 namespace My_NET_app
 {
@@ -14,22 +15,45 @@ namespace My_NET_app
             InitializeComponent();
         }
 
-        #region Full net interface ShowNetworkInterfaces()
+        #region Get_Host_IP_address (1)
+
+        public void Get_Host_IP_Address()
+        {
+            string hostName = Dns.GetHostName();
+
+            textBox3.Text = String.Empty;
+
+            IPHostEntry host = Dns.GetHostEntry(hostName);
+
+            textBox3.Text += $"GetHostEntry({hostName}) returns:";
+
+            foreach (IPAddress address in host.AddressList)
+            {
+                textBox3.Text += " #" + $"{address}" + "#" + "  ";
+            }
+        }
+
+        #endregion
+
+        #region ShowNetworkInterfaces (2)
 
         public void ShowNetworkInterfaces()
         {
 
             textBox4.Text = String.Empty;
+            
+            var List = new List<string>();
             IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
             NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
-            textBox4.Text += "Interface information for     " + computerProperties.HostName.ToString() + computerProperties.DomainName.ToString() + System.Environment.NewLine;
+
+            List.Add("Interface information for     " + computerProperties.HostName.ToString() + computerProperties.DomainName.ToString() + System.Environment.NewLine);
             if (nics == null || nics.Length < 1)
             {
-                textBox4.Text += "  No network interfaces found.";
+                List.Add("  No network interfaces found.");
                 return;
             }
 
-            textBox4.Text += "  Number of interfaces .................... : " + nics.Length.ToString() + System.Environment.NewLine + System.Environment.NewLine; ;
+            List.Add("  Number of interfaces .................... : " + nics.Length.ToString() + System.Environment.NewLine + System.Environment.NewLine);
             if (checkBox1.Checked)
             {
                 foreach (NetworkInterface adapter in nics)
@@ -37,18 +61,18 @@ namespace My_NET_app
 
                     IPInterfaceProperties properties = adapter.GetIPProperties();
                     //Console.WriteLine();
-                    textBox4.Text += adapter.Description.ToString() + System.Environment.NewLine;
-                    textBox4.Text += "=================================================" + System.Environment.NewLine;
+                    List.Add(adapter.Description.ToString() + System.Environment.NewLine);
+                    List.Add("=================================================" + System.Environment.NewLine);
                     //textBox4.Text += String.Empty.PadLeft(adapter.Description.Length, '=').ToString() + System.Environment.NewLine;
                     //textBox4.Text += "  Interface type .......................... : " + adapter.NetworkInterfaceType.ToString() + System.Environment.NewLine;
-                    textBox4.Text += "  Physical Address ........................ : " +
-                               adapter.GetPhysicalAddress().ToString() + System.Environment.NewLine;
-                    textBox4.Text += "  Operational status ...................... : " +
-                        adapter.OperationalStatus.ToString() + System.Environment.NewLine;
+                    List.Add("  Physical Address ........................ : " +
+                               adapter.GetPhysicalAddress().ToString() + System.Environment.NewLine);
+                    List.Add("  Operational status ...................... : " +
+                        adapter.OperationalStatus.ToString() + System.Environment.NewLine);
                     string versions = "";
                     foreach (IPAddressInformation unicast in properties.UnicastAddresses)
                     {
-                        textBox4.Text += "  IP address ...................... : " + unicast.Address + System.Environment.NewLine;
+                        List.Add("  IP address ...................... : " + unicast.Address + System.Environment.NewLine);
                     }
                     // Create a display string for the supported IP versions.
                     if (adapter.Supports(NetworkInterfaceComponent.IPv4))
@@ -78,10 +102,10 @@ namespace My_NET_app
                     foreach (IPAddress dnsAdress in dnsAddresses)
                     {
 
-                        textBox4.Text += "  DNS address .............................. : " + dnsAdress + System.Environment.NewLine;
+                        List.Add("  DNS address .............................. : " + dnsAdress + System.Environment.NewLine);
                     }
 
-                    textBox4.Text += System.Environment.NewLine;
+                    List.Add(System.Environment.NewLine);
 
 
                     //string label;
@@ -118,18 +142,18 @@ namespace My_NET_app
 
                     if (adapter.OperationalStatus.ToString().Equals("Up"))
                     {
-                        textBox4.Text += adapter.Description.ToString() + System.Environment.NewLine;
-                        textBox4.Text += "=================================================" + System.Environment.NewLine;
+                        List.Add(adapter.Description.ToString() + System.Environment.NewLine);
+                        List.Add("=================================================" + System.Environment.NewLine);
                         //textBox4.Text += String.Empty.PadLeft(adapter.Description.Length, '=').ToString() + System.Environment.NewLine;
                         //textBox4.Text += "  Interface type .......................... : " + adapter.NetworkInterfaceType.ToString() + System.Environment.NewLine;
-                        textBox4.Text += "  Physical Address ........................ : " +
-                                   adapter.GetPhysicalAddress().ToString() + System.Environment.NewLine;
-                        textBox4.Text += "  Operational status ...................... : " +
-                            adapter.OperationalStatus.ToString() + System.Environment.NewLine;
+                        List.Add("  Physical Address ........................ : " +
+                                   adapter.GetPhysicalAddress().ToString() + System.Environment.NewLine);
+                        List.Add("  Operational status ...................... : " +
+                            adapter.OperationalStatus.ToString() + System.Environment.NewLine);
                         string versions = "";
                         foreach (IPAddressInformation unicast in properties.UnicastAddresses)
                         {
-                            textBox4.Text += "  IP address ...................... : " + unicast.Address + System.Environment.NewLine;
+                            List.Add("  IP address ...................... : " + unicast.Address + System.Environment.NewLine);
                         }
                         // Create a display string for the supported IP versions.
                         if (adapter.Supports(NetworkInterfaceComponent.IPv4))
@@ -159,10 +183,10 @@ namespace My_NET_app
                         foreach (IPAddress dnsAdress in dnsAddresses)
                         {
 
-                            textBox4.Text += "  DNS address .............................. : " + dnsAdress + System.Environment.NewLine;
+                            List.Add("  DNS address .............................. : " + dnsAdress + System.Environment.NewLine);
                         }
 
-                        textBox4.Text += System.Environment.NewLine;
+                        List.Add(System.Environment.NewLine);
 
 
                         //string label;
@@ -186,13 +210,43 @@ namespace My_NET_app
 
                 }
             }
+        
+            foreach (var item in List)
+            {
+                textBox4.Text += item;
+            }
         }
 
         #endregion
 
+        #region Show_Cumputer_Users (3)
+        public static List<string> GetComputerUsers()
+        {
+            List<string> users = new List<string>();
+            var path =
+                string.Format("WinNT://{0},computer", Environment.MachineName);
+
+            using (var computerEntry = new DirectoryEntry(path))
+                foreach (DirectoryEntry childEntry in computerEntry.Children)
+                    if (childEntry.SchemaClassName == "User")
+                        users.Add(childEntry.Name);
+
+            return users;
+        }
+
+
+        public void Show_Computer_Users()
+        {
+            textBox5.Text = null;
+            List<string> Usernames = GetComputerUsers();
+            foreach (string s in Usernames)
+                textBox5.Text += "#" + s + "#" + "  ";
+        }
+        #endregion
+
         #region Ping_My_Address Ping_My_Address(string Ip_For_Check)
 
-        public bool Ping_My_Address(string Ip_For_Check)
+        public void Ping_My_Address(string Ip_For_Check)
             {
                
                     Ping myPing = new Ping();
@@ -207,10 +261,13 @@ namespace My_NET_app
                 string Test_on_Success = reply.Status.ToString();
                 result = Test_on_Success.Equals("Success");
             }
-            else result = false;
-                        
-            return result;
+            else
+            {
+                textBox1.Text += "NULL Result" + Environment.NewLine + Environment.NewLine;
             }
+
+
+        }
         #endregion
 
         #region Get_Ping_MAC
@@ -235,120 +292,47 @@ namespace My_NET_app
                          + substrings[8].Substring(0, 2);
                 textBox1.Text += "MAC address: " + macAddress + Environment.NewLine + Environment.NewLine;
             }
-        }
-
-        #endregion
-
-        #region Get_Host_IP_address
-        
-        public void Get_Host_IP_Address(string hostName)
-        {
-            textBox3.Text = String.Empty;
-
-            IPHostEntry host = Dns.GetHostEntry(hostName);
-
-            textBox3.Text += $"GetHostEntry({hostName}) returns:";
-
-            foreach (IPAddress address in host.AddressList)
+            else
             {
-                textBox3.Text += " #"+$"{address}"+"#" + "  ";
+                textBox1.Text += "not found" + Environment.NewLine + Environment.NewLine;
             }
         }
 
         #endregion
 
-        #region Show_Cumputer_Users
-        public static List<string> GetComputerUsers()
-        {
-            List<string> users = new List<string>();
-            var path =
-                string.Format("WinNT://{0},computer", Environment.MachineName);
-
-            using (var computerEntry = new DirectoryEntry(path))
-                foreach (DirectoryEntry childEntry in computerEntry.Children)
-                    if (childEntry.SchemaClassName == "User")
-                        users.Add(childEntry.Name);
-
-            return users;
-        }
-
-
-        public void Show_Computer_Users()
-        {
-            textBox5.Text = null;
-            List<string> Usernames = GetComputerUsers();
-            foreach (string s in Usernames)
-            textBox5.Text += "#"+s+"#" + "  ";
-        }
-        #endregion
-
-
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            
-            string HostName = Dns.GetHostName();
-            Get_Host_IP_Address(HostName);
+            Get_Host_IP_Address();
             ShowNetworkInterfaces();
             Show_Computer_Users();
         }
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
 
-        }
-        private void textBox2_TextChanged(object sender, EventArgs e)
- {
 
-        }
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-           
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            IPAddress ip_Checked;
-            string IP_address_CHK;
-            IP_address_CHK = textBox2.Text;
-            
-            string HostName = Dns.GetHostName(); 
-            Get_Host_IP_Address(HostName);
+            Get_Host_IP_Address();
             ShowNetworkInterfaces();
 
-            bool ValidateIP = IPAddress.TryParse(IP_address_CHK, out ip_Checked);
+            IPAddress ip_Checked; 
+            string IP_address_for_check;
+            IP_address_for_check = textBox2.Text;
+            bool ValidateIP = IPAddress.TryParse(IP_address_for_check, out ip_Checked);
 
             if (ValidateIP)
             {
                 try
                 {
-                    if (Ping_My_Address(ip_Checked.ToString()))
-                    {
-                        Get_Pinged_MAC(ip_Checked.ToString());
-                    }
-                    else
-                    {
-                        textBox1.Text += "not found" + Environment.NewLine + Environment.NewLine;
-                    }
-
+                    Ping_My_Address(ip_Checked.ToString());
+                    Get_Pinged_MAC(ip_Checked.ToString());
                 }
                 catch
                 {
-                    //Console.WriteLine("ERROR: You have Some TIMEOUT issue");
+                    MessageBox.Show("Fault of pinging IP address");
                 }
 
-            } //check IP correct entry and run Ping test
+            } 
             else MessageBox.Show("This is not a valide ip address, enter in format XXX.XXX.XXX.XXX");
-        }
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void label2_Click(object sender, EventArgs e)
-        {
 
         }
 
@@ -356,29 +340,10 @@ namespace My_NET_app
         {
             textBox1.Text = String.Empty;
         }
-        private void label2_Click_1(object sender, EventArgs e)
-        {
-
-        }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/icoldiron/Easy_Pinger");
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void button3_Click(object sender, EventArgs e)
