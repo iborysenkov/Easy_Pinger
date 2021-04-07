@@ -18,8 +18,8 @@ namespace My_NET_app
 
         public void Test_Modbus_TCPMuster(string Ip_Address, int Port)
         {
-            string Address_Unit_ID_textbox4 = textBox4.Text;
-            byte unit_id = Convert.ToByte(Address_Unit_ID_textbox4);
+            string Address_Unit_ID = numericAddress.Value.ToString();
+            byte unit_id = Convert.ToByte(Address_Unit_ID);
             //textBox3.Text += unit_id;
 
             try
@@ -41,7 +41,7 @@ namespace My_NET_app
 
                     byte[] floatVals = BitConverter.GetBytes(num);
                     float f = BitConverter.ToSingle(floatVals, 0);
-                    textBox3.Text += "IP: "+ Ip_Address + " Address: " + unit_id+  System.Environment.NewLine + "AE power in kWts = "+ f + System.Environment.NewLine;
+                    textBox3.Text += "IP: "+ Ip_Address + " Address: " + unit_id+  System.Environment.NewLine + "Consumed power in kWts = "+ f + System.Environment.NewLine;
                     textBox3.Text += "HEX Format:   " + data_from_register + System.Environment.NewLine + System.Environment.NewLine;
 
                     //byte[] bytes = BitConverter.GetBytes(data_from_register);

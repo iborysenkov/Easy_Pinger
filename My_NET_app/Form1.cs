@@ -4,15 +4,40 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Windows.Forms;
 using System.DirectoryServices;
+using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace My_NET_app
 {
     public partial class Form1 : Form
     {
+        Ping_node ping_node;
+        Network_Interfaces Netwrok_Interface;
+        GetMACaddress GetMACaddress;
+        public event EventHandler Updateinterface;
+        private BindingList<string> PingListBox;
+        static string Waiter = "Wait";
+        
+       
+        
+        //static bool starter = true;
+
         public Form1()
         {
             InitializeComponent();
+            ping_node = new Ping_node();
+            PingListBox = new BindingList<string>();
+            Netwrok_Interface = new Network_Interfaces();
+            GetMACaddress = new GetMACaddress();
+
+            GetMACaddress.OnNewData += Get_Pinged_MAC;
+            listBox1.DataSource = PingListBox;
+            ping_node.OnNewData += DisplayReply;
+            Netwrok_Interface.OnNewData += DisplayResult;
+            Updateinterface += Netwrok_Interface.Worker;
+            ping_node.OnCompleted += DisplayWait;
+            
         }
 
         #region Get_Host_IP_address (1)
@@ -36,182 +61,11 @@ namespace My_NET_app
         #endregion
 
         #region ShowNetworkInterfaces (2)
-
-        public void ShowNetworkInterfaces()
-        {
-
-            textBox4.Text = String.Empty;
-            
-            var List = new List<string>();
-            IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
-            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
-
-            List.Add("Interface information for     " + computerProperties.HostName.ToString() + computerProperties.DomainName.ToString() + System.Environment.NewLine);
-            if (nics == null || nics.Length < 1)
-            {
-                List.Add("  No network interfaces found.");
-                return;
-            }
-
-            List.Add("  Number of interfaces .................... : " + nics.Length.ToString() + System.Environment.NewLine + System.Environment.NewLine);
-            if (checkBox1.Checked)
-            {
-                foreach (NetworkInterface adapter in nics)
-                {
-
-                    IPInterfaceProperties properties = adapter.GetIPProperties();
-                    //Console.WriteLine();
-                    List.Add(adapter.Description.ToString() + System.Environment.NewLine);
-                    List.Add("=================================================" + System.Environment.NewLine);
-                    //textBox4.Text += String.Empty.PadLeft(adapter.Description.Length, '=').ToString() + System.Environment.NewLine;
-                    //textBox4.Text += "  Interface type .......................... : " + adapter.NetworkInterfaceType.ToString() + System.Environment.NewLine;
-                    List.Add("  Physical Address ........................ : " +
-                               adapter.GetPhysicalAddress().ToString() + System.Environment.NewLine);
-                    List.Add("  Operational status ...................... : " +
-                        adapter.OperationalStatus.ToString() + System.Environment.NewLine);
-                    string versions = "";
-                    foreach (IPAddressInformation unicast in properties.UnicastAddresses)
-                    {
-                        List.Add("  IP address ...................... : " + unicast.Address + System.Environment.NewLine);
-                    }
-                    // Create a display string for the supported IP versions.
-                    if (adapter.Supports(NetworkInterfaceComponent.IPv4))
-                    {
-                        versions = "IPv4";
-                    }
-                    if (adapter.Supports(NetworkInterfaceComponent.IPv6))
-                    {
-                        if (versions.Length > 0)
-                        {
-                            versions += " ";
-                        }
-                        versions += "IPv6";
-                    }
-                    //textBox4.Text += "  IP version .............................. : "+ versions + System.Environment.NewLine;
-                    //ShowIPAddresses(properties);
-
-                    // The following information is not useful for loopback adapters.
-                    if (adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback)
-                    {
-                        continue;
-                    }
-                    //textBox4.Text += "  DNS suffix .............................. : "+ properties.DnsSuffix.ToString() + System.Environment.NewLine + System.Environment.NewLine;
-
-                    IPAddressCollection dnsAddresses = properties.DnsAddresses;
-
-                    foreach (IPAddress dnsAdress in dnsAddresses)
-                    {
-
-                        List.Add("  DNS address .............................. : " + dnsAdress + System.Environment.NewLine);
-                    }
-
-                    List.Add(System.Environment.NewLine);
-
-
-                    //string label;
-                    if (adapter.Supports(NetworkInterfaceComponent.IPv4))
-                    {
-                        IPv4InterfaceProperties ipv4 = properties.GetIPv4Properties();
-                        //textBox4.Text += ("  MTU...................................... : {0}", ipv4.Mtu);
-                        if (ipv4.UsesWins)
-                        {
-
-                            IPAddressCollection winsServers = properties.WinsServersAddresses;
-                            if (winsServers.Count > 0)
-                            {
-                                //label = "  WINS Servers ............................ :";
-                                //ShowIPAddresses(label, winsServers);
-                            }
-                        }
-                    }
-
-                    //textBox4.Text += ("  DNS enabled ............................. : {0}",                    properties.IsDnsEnabled);
-                    //textBox4.Text += ("  Dynamically configured DNS .............. : {0}",                    properties.IsDynamicDnsEnabled);
-                    //textBox4.Text += ("  Receive Only ............................ : {0}",                    adapter.IsReceiveOnly);
-                    //textBox4.Text += ("  Multicast ............................... : {0}",                    adapter.SupportsMulticast);
-                    //ShowInterfaceStatistics(adapter);
-
-                    //Console.WriteLine();
-                }
-            }
-            else
-            {
-                foreach (NetworkInterface adapter in nics)
-                {
-                    IPInterfaceProperties properties = adapter.GetIPProperties();
-
-                    if (adapter.OperationalStatus.ToString().Equals("Up"))
-                    {
-                        List.Add(adapter.Description.ToString() + System.Environment.NewLine);
-                        List.Add("=================================================" + System.Environment.NewLine);
-                        //textBox4.Text += String.Empty.PadLeft(adapter.Description.Length, '=').ToString() + System.Environment.NewLine;
-                        //textBox4.Text += "  Interface type .......................... : " + adapter.NetworkInterfaceType.ToString() + System.Environment.NewLine;
-                        List.Add("  Physical Address ........................ : " +
-                                   adapter.GetPhysicalAddress().ToString() + System.Environment.NewLine);
-                        List.Add("  Operational status ...................... : " +
-                            adapter.OperationalStatus.ToString() + System.Environment.NewLine);
-                        string versions = "";
-                        foreach (IPAddressInformation unicast in properties.UnicastAddresses)
-                        {
-                            List.Add("  IP address ...................... : " + unicast.Address + System.Environment.NewLine);
-                        }
-                        // Create a display string for the supported IP versions.
-                        if (adapter.Supports(NetworkInterfaceComponent.IPv4))
-                        {
-                            versions = "IPv4";
-                        }
-                        if (adapter.Supports(NetworkInterfaceComponent.IPv6))
-                        {
-                            if (versions.Length > 0)
-                            {
-                                versions += " ";
-                            }
-                            versions += "IPv6";
-                        }
-                        //textBox4.Text += "  IP version .............................. : "+ versions + System.Environment.NewLine;
-                        //ShowIPAddresses(properties);
-
-                        // The following information is not useful for loopback adapters.
-                        if (adapter.NetworkInterfaceType == NetworkInterfaceType.Loopback)
-                        {
-                            continue;
-                        }
-                        //textBox4.Text += "  DNS suffix .............................. : "+ properties.DnsSuffix.ToString() + System.Environment.NewLine + System.Environment.NewLine;
-
-                        IPAddressCollection dnsAddresses = properties.DnsAddresses;
-
-                        foreach (IPAddress dnsAdress in dnsAddresses)
-                        {
-
-                            List.Add("  DNS address .............................. : " + dnsAdress + System.Environment.NewLine);
-                        }
-
-                        List.Add(System.Environment.NewLine);
-
-
-                        //string label;
-                        if (adapter.Supports(NetworkInterfaceComponent.IPv4))
-                        {
-                            IPv4InterfaceProperties ipv4 = properties.GetIPv4Properties();
-                            //textBox4.Text += ("  MTU...................................... : {0}", ipv4.Mtu);
-                            if (ipv4.UsesWins)
-                            {
-
-                                IPAddressCollection winsServers = properties.WinsServersAddresses;
-                                if (winsServers.Count > 0)
-                                {
-                                    //label = "  WINS Servers ............................ :";
-                                    //ShowIPAddresses(label, winsServers);
-                                }
-                            }
-                        }
-
-                    }
-
-                }
-            }
         
-            foreach (var item in List)
+        public void DisplayResult(object sender, List<string> e)
+        {
+            textBox4.Text = String.Empty;
+            foreach (var item in e)
             {
                 textBox4.Text += item;
             }
@@ -244,58 +98,79 @@ namespace My_NET_app
         }
         #endregion
 
-        #region Ping_My_Address Ping_My_Address(string Ip_For_Check)
+        #region Display Ping Reply 
 
-        public void Ping_My_Address(string Ip_For_Check)
+        private void DisplayReply(object sender, PingReply e)
+        {
+            
+            PingReply reply = e;
+            if (reply == null)
+                return;
+            IPAddress IPaddress = (IPAddress)reply.Address;
+            PingListBox.Remove(Waiter);
+            if (reply.Status == IPStatus.Success)
             {
-               
-                    Ping myPing = new Ping();
-                    PingReply reply = myPing.Send(Ip_For_Check, 1000);
-                    bool result;
-            if (reply != null)
-            {
-                textBox1.Text += "Ping " + Ip_For_Check.ToString() + System.Environment.NewLine;
-                textBox1.Text += DateTime.Now.ToString() + "  //  Ping " + reply.Status + "  // Time : " + reply.RoundtripTime.ToString()+" //" + " Address : " + reply.Address + Environment.NewLine;
-                //Console.WriteLine(reply.ToString());
                 
-                string Test_on_Success = reply.Status.ToString();
-                result = Test_on_Success.Equals("Success");
+                PingListBox.Add(" Reply From Address: " + reply.Address.ToString()
+                    + " bytes=" + reply.Buffer.Length
+                    + " time:" + reply.RoundtripTime.ToString()
+                    + " TTL:" + reply.Options.Ttl.ToString());
             }
             else
             {
-                textBox1.Text += "NULL Result" + Environment.NewLine + Environment.NewLine;
+               PingListBox.Add("No reply from Pinged IP" + Environment.NewLine);
+
             }
-
-
+            Waiter = "Wait";
+            return;
         }
+
+        private async void DisplayWait(object sender, CancellationToken token)
+        {   
+            await Task.Run(() => Mysmth(token));
+        }
+
+        void Mysmth(CancellationToken token)
+        {
+            Thread.Sleep(500);
+            while (true)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    break;
+                }
+                PingListBox.Remove(Waiter);
+                Waiter += ">";
+                PingListBox.Add(Waiter);
+                Thread.Sleep(200);
+
+            }
+            return;
+        }
+
         #endregion
 
         #region Get_Ping_MAC
 
-        public void Get_Pinged_MAC(string ipAddress)
+        public void Get_Pinged_MAC(object sender, string[] e, string ipAddress)
         {
-            string macAddress = string.Empty;
-            System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
-            pProcess.StartInfo.FileName = "arp";
-            pProcess.StartInfo.Arguments = "-a " + ipAddress;
-            pProcess.StartInfo.UseShellExecute = false;
-            pProcess.StartInfo.RedirectStandardOutput = true;
-            pProcess.StartInfo.CreateNoWindow = true;
-            pProcess.Start();
-            string strOutput = pProcess.StandardOutput.ReadToEnd();
-            string[] substrings = strOutput.Split('-');
-            if (substrings.Length >= 8)
+
+            if (e.Length >= 8)
             {
-                macAddress = substrings[3].Substring(Math.Max(0, substrings[3].Length - 2))
-                         + "-" + substrings[4] + "-" + substrings[5] + "-" + substrings[6]
-                         + "-" + substrings[7] + "-"
-                         + substrings[8].Substring(0, 2);
-                textBox1.Text += "MAC address: " + macAddress + Environment.NewLine + Environment.NewLine;
+                string macAddress = e[3].Substring(Math.Max(0, e[3].Length - 2))
+                         + "-" + e[4] + "-" + e[5] + "-" + e[6]
+                         + "-" + e[7] + "-"
+                         + e[8].Substring(0, 2);
+                PingListBox.Add(Environment.NewLine);
+                PingListBox.Add(DateTime.Now.ToString() + " IP: " + ipAddress + " MAC address: " + macAddress + Environment.NewLine);
             }
             else
             {
-                textBox1.Text += "not found" + Environment.NewLine + Environment.NewLine;
+                PingListBox.Add(Environment.NewLine);
+                PingListBox.Add(Environment.NewLine + DateTime.Now.ToString() + " MAC of IP: " + ipAddress + " NOT FOUND" + Environment.NewLine);
             }
+            PingListBox.Add("==============================" + Environment.NewLine);
+
         }
 
         #endregion
@@ -303,28 +178,26 @@ namespace My_NET_app
         private void Form1_Load(object sender, EventArgs e)
         {
             Get_Host_IP_Address();
-            ShowNetworkInterfaces();
             Show_Computer_Users();
         }
-
-
 
         private void button1_Click(object sender, EventArgs e)
         {
             Get_Host_IP_Address();
-            ShowNetworkInterfaces();
-
             IPAddress ip_Checked; 
             string IP_address_for_check;
             IP_address_for_check = textBox2.Text;
             bool ValidateIP = IPAddress.TryParse(IP_address_for_check, out ip_Checked);
+            Updateinterface?.Invoke(this, EventArgs.Empty);
 
             if (ValidateIP)
             {
                 try
                 {
-                    Ping_My_Address(ip_Checked.ToString());
-                    Get_Pinged_MAC(ip_Checked.ToString());
+                    GetMACaddress.Worker(ip_Checked.ToString());
+                    ping_node.Qty_of_tries = (int)numericPing.Value;
+                    ping_node._IPaddress = ip_Checked;
+                    ping_node.Start();
                 }
                 catch
                 {
@@ -338,7 +211,9 @@ namespace My_NET_app
 
         private void button2_Click(object sender, EventArgs e)
         {
-            textBox1.Text = String.Empty;
+            //textBox1.Text = String.Empty;
+            PingListBox.Clear();
+
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -359,5 +234,13 @@ namespace My_NET_app
             //form2.Closed += (s, args) => this.Close();
             //form2.Show();
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Netwrok_Interface.Full_List_of_interface = checkBox1.Checked;
+            Updateinterface?.Invoke(this, EventArgs.Empty);
+        }
+
+
     }
 }
