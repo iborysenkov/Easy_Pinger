@@ -71,13 +71,13 @@ namespace My_NET_app
             
             for (int i = 1; i <= Qty_of_tries; i++)
             {
-                /*
+                
                 if (!isActive)
                 {
                     //OnCompleted?.Invoke(this);
                     return;
                 }
-                */
+                
                 CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
                 CancellationToken token = cancelTokenSource.Token;
                 OnCompleted?.Invoke(this, token);

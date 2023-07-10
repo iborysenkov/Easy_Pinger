@@ -10,8 +10,7 @@ namespace My_NET_app
     {
 
        System.Diagnostics.Process pProcess;
-       
-
+      
         public event Action<object, string[], string> OnNewData;
 
         public GetMACaddress()
@@ -36,10 +35,8 @@ namespace My_NET_app
 
 
         public async void Worker(string ipAddress)
-            {
-            
+        {           
             var Reply = await Task.Run(() => MACGetter(pProcess, ipAddress));
-
             OnNewData?.Invoke(this, Reply, ipAddress);
 
         }

@@ -18,9 +18,7 @@ namespace My_NET_app
         public event EventHandler Updateinterface;
         private BindingList<string> PingListBox;
         static string Waiter = "Wait";
-        
-       
-        
+
         //static bool starter = true;
 
         public Form1()
@@ -218,7 +216,7 @@ namespace My_NET_app
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/icoldiron/Easy_Pinger");
+            System.Diagnostics.Process.Start("https://github.com/iborysenkov/Easy_Pinger");
         }
 
         private void button3_Click(object sender, EventArgs e)

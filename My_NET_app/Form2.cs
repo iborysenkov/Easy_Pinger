@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Modbus;
 using System.Net;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace My_NET_app
 {
@@ -20,7 +21,6 @@ namespace My_NET_app
         {
             string Address_Unit_ID = numericAddress.Value.ToString();
             byte unit_id = Convert.ToByte(Address_Unit_ID);
-            //textBox3.Text += unit_id;
 
             try
             {
@@ -50,7 +50,6 @@ namespace My_NET_app
                     //    bytes = bytes.Reverse().ToArray();
                     //}
                     //float myFloat = BitConverter.ToSingle(bytes, 0);
-                    //textBox3.Text +=
 
                     //textBox3.Text += arc + System.Environment.NewLine;
                 }
@@ -68,22 +67,6 @@ namespace My_NET_app
         }
         #endregion
 
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button3_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -92,7 +75,7 @@ namespace My_NET_app
             this.Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             IPAddress ip_Checked;
             string IP_address_CHK;
@@ -107,7 +90,7 @@ namespace My_NET_app
                 int Port_number = Int32.Parse(Port_number_string);
                 if (Enumerable.Range(1, 65535).Contains(Port_number) & ValidateIP)
                 {
-                    Test_Modbus_TCPMuster(ip_Checked.ToString(), Port_number);
+                    await Task.Run(() => Test_Modbus_TCPMuster(ip_Checked.ToString(), Port_number));
                 }
                 else
                 {
@@ -123,34 +106,10 @@ namespace My_NET_app
 
         }
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             textBox3.Text = String.Empty;
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-          
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
